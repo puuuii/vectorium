@@ -66,6 +66,11 @@
   - vectorium-domain: ドメインモデル・ビジネスロジック
   - vectorium-app: アプリケーションサービス
 
+### Rust ファイル分割方針
+
+- mod.rs は使わず、model.rs や repository.rs などのファイル分割を推奨
+- ディレクトリ直下に各モジュールファイルを配置することで、保守性・可読性を高める
+
 ### レイヤ構成
 
 ```
@@ -111,3 +116,11 @@ vectorium/
 - Qdrant と API は別プロセス・別クレート
 - テストは各クレート単位で実施
 - 拡張性・保守性重視
+
+### 開発ワークフロー
+
+- 実装後は、コミット前に必ず以下のコマンドを実行し、品質を担保すること。
+  - `cargo fmt`
+  - `cargo clippy -- -D warnings`
+  - `cargo test`
+  - `cargo check`
