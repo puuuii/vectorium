@@ -4,8 +4,17 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+glob = "0.3.1"
 qdrant-client = "1.15.0"
 serde = { version = "1.0.219", features = ["derive"] }
 tokio = { version = "1.47.1", features = ["full"] }
 finalfusion = "0.18.0"
 wordfreq-model = { version = "0.2.3", features = ["large-ja"] }
+rust-bert = "0.23.0"
+indicatif = "0.18.0"
+tch = "0.17.0"
+
+[dependencies.ndarray-linalg]
+version = "0.17.0"
+features = ["openblas-system"]
+default-features = false
