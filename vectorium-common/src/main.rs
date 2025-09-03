@@ -3,16 +3,17 @@ use qdrant_client::Qdrant;
 use qdrant_client::qdrant::{
     CreateCollectionBuilder, Distance, PointStruct, UpsertPointsBuilder, VectorParamsBuilder,
 };
-use std::collections::HashMap;
+use rust_bert::pipelines::sentence_embeddings::{
+    SentenceEmbeddingsBuilder, SentenceEmbeddingsModelType,
+};
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
-use vectorium_common::get_embedding;
-use vectorium_common::get_qdrant_client;
-
 #[tokio::main]
 async fn main() {
-    let client = get_qdrant_client();
+    let client = Qdrant::from_url("http://localhost:6334")
+        .build()
+        .expect("Failed to build client");
 
     let collection_name = "knowledge";
     let _ = client.delete_collection(collection_name).await;
@@ -38,20 +39,38 @@ async fn main() {
     }
 
     let sentences_clone = sentences.clone();
-    let embeddings = get_embedding(sentences_clone).await;
+    let embeddings = tokio::task::spawn_blocking(move || {
+        let sentence_embeddings_model =
+            SentenceEmbeddingsBuilder::remote(SentenceEmbeddingsModelType::AllMiniLmL12V2)
+                .create_model()
+                .expect("Failed to create embeddings model");
+
+        sentence_embeddings_model
+            .encode(&sentences_clone)
+            .expect("Failed to encode sentences")
+    })
+    .await
+    .expect("Blocking task failed");
+
+    println!("\n=== 文埋め込み結果 ===");
+    for (i, embedding) in embeddings.iter().enumerate() {
+        println!("テキスト {}: 次元数 = {}", i + 1, embedding.len());
+    }
 
     let points = embeddings
         .into_iter()
         .zip(sentences.iter())
         .enumerate()
         .map(|(i, (embedding, sentence))| {
-            let mut payload = HashMap::new();
-            payload.insert("text".to_string(), sentence.clone().into());
+            let payload: std::collections::HashMap<String, qdrant_client::qdrant::Value> =
+                [("text".into(), sentence.clone().into())]
+                    .into_iter()
+                    .collect();
 
             PointStruct {
                 id: Some((i as u64).into()),
                 vectors: Some(embedding.into()),
-                payload: payload,
+                payload,
             }
         })
         .collect::<Vec<_>>();
