@@ -1,10 +1,9 @@
 [package]
-name = "vectorium-api"
+name = "vectorium-counter"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-qdrant-client = "1.15.0"
 rmcp = { git = "https://github.com/modelcontextprotocol/rust-sdk", branch = "main", features = [
     "server",
     "client",
@@ -20,4 +19,3 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 schemars = "1.0.4"
 axum = "0.8.4"
-vectorium-common = { path = "../vectorium-common" }

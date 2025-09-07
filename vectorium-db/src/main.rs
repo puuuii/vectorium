@@ -19,7 +19,7 @@ async fn main() {
     client
         .create_collection(
             CreateCollectionBuilder::new(collection_name)
-                .vectors_config(VectorParamsBuilder::new(384, Distance::Cosine)),
+                .vectors_config(VectorParamsBuilder::new(512, Distance::Cosine)),
         )
         .await
         .expect("Failed to create collection");

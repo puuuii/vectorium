@@ -1,3 +1,4 @@
 target/
 data/
 qdrant_storage/
+api.log

@@ -1,0 +1,10 @@
+{
+  "servers": {
+    "vectorium-api": {
+      "type": "stdio",
+      "command": "E:\\project\\vectorium\\target\\release\\vectorium-api.exe",
+      "args": []
+    }
+  },
+  "inputs": []
+}

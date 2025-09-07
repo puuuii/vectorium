@@ -6,4 +6,9 @@ edition = "2024"
 [dependencies]
 
 [workspace]
-members = ["vectorium-common", "vectorium-db", "vectorium-api"]
+members = [
+    "vectorium-common",
+    "vectorium-db",
+    "vectorium-api",
+    "vectorium-counter",
+]
