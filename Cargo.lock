@@ -3266,6 +3266,7 @@ dependencies = [
 name = "vectorium-db"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "glob",
  "qdrant-client",
  "rust-bert",
