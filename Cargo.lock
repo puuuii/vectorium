@@ -3242,6 +3242,7 @@ name = "vectorium-common"
 version = "0.1.0"
 dependencies = [
  "console",
+ "glob",
  "qdrant-client",
  "rust-bert",
  "tokio",

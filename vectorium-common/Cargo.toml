@@ -8,3 +8,4 @@ qdrant-client = "1.15.0"
 tokio = { version = "1.47.1", features = ["full"] }
 rust-bert = "0.23.0"
 console = { version = "0.16", features = ["std"] }
+glob = "0.3.1"
